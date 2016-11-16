@@ -170,6 +170,10 @@ func main() {
 			Name:  "dns-timeout",
 			Usage: "Set the DNS timeout value to a specific value in seconds. The default is 10 seconds.",
 		},
+		cli.IntFlag{
+			Name:  "dns-propagation-timeout",
+			Usage: "Set the DNS propagation timeout value to a specific value in seconds. The default is to use the provider's timeout value.",
+		},
 		cli.StringSliceFlag{
 			Name:  "dns-resolvers",
 			Usage: "Set the resolvers to use for performing recursive DNS queries. Supported: host:port. The default is to use Google's DNS resolvers.",

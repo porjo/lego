@@ -35,6 +35,9 @@ var RecursiveNameservers = getNameservers(defaultResolvConf, defaultNameservers)
 // DNSTimeout is used to override the default DNS timeout of 10 seconds.
 var DNSTimeout = 10 * time.Second
 
+// DNSPropagationTimeout is used to override the provider's default DNS propagation timeout.
+var DNSPropagationTimeout time.Duration
+
 // getNameservers attempts to get systems nameservers before falling back to the defaults
 func getNameservers(path string, defaults []string) []string {
 	config, err := dns.ClientConfigFromFile(path)
@@ -106,6 +109,10 @@ func (s *dnsChallenge) Solve(chlng challenge, domain string) error {
 		timeout, interval = provider.Timeout()
 	default:
 		timeout, interval = 60*time.Second, 2*time.Second
+	}
+
+	if DNSPropagationTimeout > 0 {
+		timeout = DNSPropagationTimeout
 	}
 
 	err = WaitFor(timeout, interval, func() (bool, error) {

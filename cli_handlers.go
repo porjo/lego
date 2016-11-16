@@ -56,6 +56,10 @@ func setup(c *cli.Context) (*Configuration, *Account, *acme.Client) {
 		acme.DNSTimeout = time.Duration(c.GlobalInt("dns-timeout")) * time.Second
 	}
 
+	if c.GlobalIsSet("dns-propagation-timeout") {
+		acme.DNSPropagationTimeout = time.Duration(c.GlobalInt("dns-propagation-timeout")) * time.Second
+	}
+
 	if len(c.GlobalStringSlice("dns-resolvers")) > 0 {
 		resolvers := []string{}
 		for _, resolver := range c.GlobalStringSlice("dns-resolvers") {
